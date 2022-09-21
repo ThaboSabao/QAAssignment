@@ -61,7 +61,7 @@
             <p>{{ yard.capacity }}</p>
         </div>
 
-        <ul class="list-group">
+        <ol class="list-group">
             {% for vehicle in yard.vehicles %}
             <a href="{{ url_for('ViewVehicle', id=vehicle.id) }}">
                 <li class="list-group-item">
@@ -69,7 +69,7 @@
                 </li>
             </a>
             {% endfor %}
-        </ul>
+        </ol>
 
     </div>
     {% endfor %}
