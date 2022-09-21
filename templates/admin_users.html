@@ -5,19 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin users</title>
+    <link rel="stylesheet" href="../../static/styles.css">
+    {% extends "bootstrap/base.html" %}
+    {% import "bootstrap/wtf.html" as wtf %}
+    {% block title%}
+    All users
+    {% endblock %}
 </head>
 
 <body>
+    {% block navbar %}
+    <nav class="nav-cont">
+        <ul class="nav-options">
+            <li class="nav-option">
+                <a class="" href="{{ url_for('Dashboard') }}">Dashboard</a>
+            </li>
+            {% if current_user.role == 0 %}
+            <li class="nav-option">
+                <a class="" href="{{ url_for('AdminUsers') }}">User management</a>
+            </li>
+            <li class="nav-option">
+                <a class="" href="{{ url_for('AdminVehicles') }}">Vehicle management</a>
+            </li>
+            {% endif %}
+            <li class="nav-option">
+                <a class="" href="{{ url_for('Home') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    {% endblock %}
+
+    {% block content %}
+    <ul class="list-group">
     {% for user in users %}
     <a href="{{ url_for('AdminUser', id=user.id) }}">
-        <div>
+        <li class="list-group-item">
             <h1>{{ user.username }}</h1>
             <p>{{ user.role }}</p>
-        </div>
+        </li>
     </a>
-
     {% endfor %}
+    </ul>
+
+    {% endblock %}
 </body>
 
 </html>
