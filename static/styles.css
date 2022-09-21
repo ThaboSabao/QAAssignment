@@ -1,0 +1,39 @@
+.nav-cont {
+    background: rgba(255, 247, 83, 1);
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+}
+
+.nav-options {
+    list-style: none;
+}
+
+.nav-option {
+    display: inline-block;
+    margin: 0 0.5rem;
+    padding: 1rem;
+}
+
+.user-card {
+    border: solid 0.1rem rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    display: flex;
+    margin: 1rem;
+    padding: 1rem;
+    width: 35rem;
+}
+
+.company-options {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.yard-cont {
+    border: solid 0.1rem rgba(0, 0, 0, 0.25);
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+}

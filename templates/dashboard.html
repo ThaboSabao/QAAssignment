@@ -1,42 +1,81 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block navbar %}
-<nav>
-    <h1>Dashboard</h1>
-    <a href="{{ url_for('AdminUsers') }}"><button>User management</button></a>
-    <a href="{{ url_for('AdminVehicles') }}"><button>Vehicle management</button></a>
-    <a href="{{ url_for('Home') }}"><button>Logout</button></a>
-</nav>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles.css">
+    {% extends "bootstrap/base.html" %}
+    {% block title%}
+    Dashboard
+    {% endblock %}
+</head>
 
-{% if current_user.is_authenticated %}
-<h1>Hi {{ current_user.username }}!</h1>
-{% endif %}
+<body>
+    {% block navbar %}
+    <nav class="nav-cont">
+        <ul class="nav-options">
+            {% if current_user.role == 0 %}
+            <li class="nav-option">
+                <a class="" href="{{ url_for('AdminUsers') }}">User management</a>
+            </li>
+            <li class="nav-option">
+                <a class="" href="{{ url_for('AdminVehicles') }}">Vehicle management</a>
+            </li>
+            {% endif %}
+            <li class="nav-option">
+                <a class="" href="{{ url_for('Home') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    {% endblock %}
 
-{% if company %}
-<h1>{{ company.name }}!</h1>
-<a href="{{ url_for('CreateYard') }}"><button>Create yard</button></a>
-{% else %}
-<a href="{{ url_for('CompanyPage') }}"><button>Create company</button></a>
-{% endif %}
 
-<br />
-<a href="{{ url_for('CreateVehicle') }}"><button>Add vehicle</button></a>
-{% for yard in yards %}
-<div>
-    <div>
-        <h1>{{ yard.name }}</h1>
-        <p>{{ yard.address }}</p>
-        <p>{{ yard.capacity }}</p>
-    </div>
-    {% for vehicle in yard.vehicles %}
-    <a href="{{ url_for('ViewVehicle', id=vehicle.id) }}">
-        <div>
-            <h2>{{ vehicle.vin }}</h2>
+    {% block content %}
+
+    <div class="user-card">
+        <div class="user-info">
+            {% if current_user.is_authenticated %}
+            <h1 class="name">Hi {{ current_user.username }}!</h1>
+            {% endif %}
+            {% if company %}
+            <p class="company">{{ company.name }}</p>
+            {% endif %}
         </div>
-    </a>
+        <div class="company-options">
+            {% if company %}
+            <a href="{{ url_for('CreateYard') }}"><button class="btn btn-primary">Create yard</button></a>
+            {% else %}
+            <a href="{{ url_for('CompanyPage') }}"><button class="btn btn-primary">Create company</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ url_for('CreateVehicle') }}"><button class="btn btn-primary">Add vehicle</button></a>
+    {% for yard in yards %}
+    <div class="yard-cont">
+        <div class="yard-info">
+            <h1>{{ yard.name }}</h1>
+            <p>{{ yard.address }}</p>
+            <p>{{ yard.capacity }}</p>
+        </div>
+
+        <ul class="list-group">
+            {% for vehicle in yard.vehicles %}
+            <a href="{{ url_for('ViewVehicle', id=vehicle.id) }}">
+                <li class="list-group-item">
+                    {{ vehicle.vin }}
+                </li>
+            </a>
+            {% endfor %}
+        </ul>
+
+    </div>
     {% endfor %}
-</div>
-{% endfor %}
+
+    {% endblock %}
+
 </body>
+
+</html>

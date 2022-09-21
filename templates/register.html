@@ -1,6 +1,16 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{url_for('Home')}}">Inventory manager</a>
+    </div>
+</nav>
 <form method="POST" action="">
     {{ form.hidden_tag() }}
     {{ wtf.quick_form(form) }}
@@ -9,6 +19,5 @@
 <a href="{{url_for('Login')}}">
     <p>Already have an account?</p>
 </a>
-</body>
 
-</html>
+{% endblock %}
