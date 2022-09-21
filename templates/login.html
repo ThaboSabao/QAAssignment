@@ -1,0 +1,17 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ wtf.quick_form(form) }}
+</form>
+
+<a href="{{url_for('Register')}}">
+    <p>Don't have an account?</p>
+</a>
+{% endblock %}

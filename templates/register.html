@@ -1,0 +1,14 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    {{ wtf.quick_form(form) }}
+</form>
+
+<a href="{{url_for('Login')}}">
+    <p>Already have an account?</p>
+</a>
+</body>
+
+</html>
