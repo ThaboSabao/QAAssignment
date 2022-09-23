@@ -27,7 +27,7 @@
             </li>
             {% endif %}
             <li class="nav-option">
-                <a class="" href="{{ url_for('Home') }}">Logout</a>
+                <a class="" href="{{ url_for('LogOut') }}">Logout</a>
             </li>
         </ul>
     </nav>
@@ -37,7 +37,7 @@
     <a href="{{url_for('EditVehicle', id=vehicle.id)}}">
         <button class="btn btn-primary">Edit</button>
     </a>
-    <a href="{{url_for('DeleteVehicle', id=vehicle.id)}}">
+    <a href="{{url_for('ConfirmVehicleDelete', id=vehicle.id)}}">
         <button class="btn btn-danger">Delete</button>
     </a>
     <ul class="list-group">
@@ -48,5 +48,9 @@
         <li class="list-group-item">{{ vehicle.colour }}</li>
     </ul>
     {% endblock %}
+
+
+    {% block modal %}{% endblock %}
 </body>
+{% block script %}{% endblock %}
 </html>

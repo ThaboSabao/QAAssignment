@@ -2,6 +2,7 @@
     background: rgba(255, 247, 83, 1);
     display: inline-block;
     text-align: right;
+    min-height: 5rem;
     width: 100%;
 }
 

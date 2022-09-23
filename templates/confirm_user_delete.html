@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/styles.css">
+    <link rel="stylesheet" href="../../../../static/styles.css">
     {% extends "bootstrap/base.html" %}
     {% import "bootstrap/wtf.html" as wtf %}
     {% block title%}
-    Edit vehicle
+    Confirm delete
     {% endblock %}
 </head>
 <body>
@@ -34,11 +34,13 @@
     {% endblock %}
 
     {% block content %}
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ wtf.quick_form(form) }}
-    </form>
-
+    <h1>Are you sure you want to delete {{ user.username }}?</h1>
+      <a href="{{ url_for('AdminUserDelete', id=user.id) }}">
+        <button class="btn btn-primary">Confirm</button>
+      </a>
+      <a href="{{ url_for('AdminUser', id=user.id) }}">
+        <button class="btn btn-danger">Cancel</button>
+      </a>
     {% endblock %}
 </body>
 </html>

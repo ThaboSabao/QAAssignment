@@ -26,7 +26,7 @@
             </li>
             {% endif %}
             <li class="nav-option">
-                <a class="" href="{{ url_for('Home') }}">Logout</a>
+                <a class="" href="{{ url_for('LogOut') }}">Logout</a>
             </li>
         </ul>
     </nav>
@@ -37,7 +37,7 @@
         <a href="{{ url_for('AdminUserEdit', id=user.id) }}">
             <button class="btn btn-primary">Edit</button>
         </a>
-        <a href="{{ url_for('AdminUserDelete', id=user.id) }}">
+        <a href="{{ url_for('AdminUserConfirmDelete', id=user.id) }}">
             <button class="btn btn-danger">Delete</button>
         </a>
     </div>

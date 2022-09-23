@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    {% extends "bootstrap/base.html" %}
+    {% block title%}
+    Dashboard
+    {% endblock %}
 </head>
 <body>
-    <nav>
-        <h1>Home</h1>
-        <a href="{{ url_for('Login') }}">Login</a>
-        <a href="{{ url_for('Register') }}">Register</a>
+    {% block navbar %}
+    <nav class="nav-cont">
+
     </nav>
+    {% endblock %}
+
+    {% block content %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div>
+                        <p>{{ msg }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <a href="{{ url_for('Login') }}"><button class="btn btn-primary">Login</button></a>
+        <a href="{{ url_for('Register') }}"><button class="btn btn-secondary">Register</button></a>
+    {% endblock %}
 </body>
 </html>

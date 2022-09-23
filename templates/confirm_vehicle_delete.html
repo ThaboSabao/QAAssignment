@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../static/styles.css">
+  {% extends "bootstrap/base.html" %}
+  {% import "bootstrap/wtf.html" as wtf %}
+  {% block title%}
+  Confirm delete
+  {% endblock %}
+</head>
+<body>
+  {% block navbar %}
+  <nav class="nav-cont">
+      <ul class="nav-options">
+          <li class="nav-option">
+              <a class="" href="{{ url_for('Dashboard') }}">Dashboard</a>
+          </li>
+          {% if current_user.role == 0 %}
+          <li class="nav-option">
+              <a class="" href="{{ url_for('AdminUsers') }}">User management</a>
+          </li>
+          <li class="nav-option">
+              <a class="" href="{{ url_for('AdminVehicles') }}">Vehicle management</a>
+          </li>
+          {% endif %}
+          <li class="nav-option">
+              <a class="" href="{{ url_for('LogOut') }}">Logout</a>
+          </li>
+      </ul>
+  </nav>
+  {% endblock %}
+
+  {% block content %}
+  <h1>Are you sure you want to delete {{ vehicle.vin }}?</h1>
+    <a href="{{ url_for('DeleteVehicle', id=vehicle.id) }}">
+      <button class="btn btn-primary">Confirm</button>
+    </a>
+    <a href="{{ url_for('ViewVehicle', id=vehicle.id) }}">
+      <button class="btn btn-danger">Cancel</button>
+    </a>
+  {% endblock %}
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -150,6 +150,7 @@ def Login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
+                session['was_logged_in'] = True
                 return redirect(url_for('Dashboard'))
     return render_template('login.html', form=form)
 
@@ -157,6 +158,9 @@ def Login():
 @app.route('/logout')
 def LogOut():
     logout_user()
+    if session.get('was_logged_in'):
+        del session['was_logged_in']
+    flash(f'You have been logged out', 'info')
     return redirect(url_for('Home'))
 
 
@@ -209,18 +213,41 @@ def CreateVehicle():
 
     return render_template('vehicle_create.html', form=form)
 
+def find_yards(yards, yard_id):
+    for yard in yards:
+        if yard.id == yard_id:
+            return yard
+
 @app.route('/vehicle/delete/<int:id>')
 @login_required
 def DeleteVehicle(id):
+    user = User.query.filter_by(id=current_user.id).first()
+    yards = Yard.query.filter_by(company_id=user.company_id).all()
+
+    
     vehicle_to_delete = Vehicle.query.filter_by(id=id).first()
+
+    y = find_yards(yards, user.company_id)
+    if y is None:
+        return
+
     db.session.delete(vehicle_to_delete)
     db.session.commit()
-    flash('Deleted')
+    flash(f'Vehicle deleted')
+    company = {}
+    yards = {}
     if current_user.company_id:
         company = Company.query.filter_by(id=current_user.company_id).first()
         yards = Yard.query.filter_by(company_id=current_user.company_id).all()
 
-    return render_template('dashboard.html', company=company, yards=yards)
+    return redirect(url_for('Dashboard', company=company, yards=yards))
+
+@app.route('/vehicle/delete/confirm/<int:id>')
+@login_required
+def ConfirmVehicleDelete(id):
+    vehicle = Vehicle.query.filter_by(id=id).first()
+
+    return render_template('confirm_vehicle_delete.html', vehicle=vehicle)
 
 @app.route('/vehicle/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -296,9 +323,19 @@ def AdminUserDelete(id):
     db.session.commit()
     flash('User deleted')
 
-    users = User.query.all()
+    return redirect(url_for('AdminUsers'))
 
-    return render_template('admin_users.html', users=users)
+@app.route('/admin/user/delete/confirm/<int:id>')
+@login_required
+def AdminUserConfirmDelete(id):
+    if current_user.role == 1:
+        return redirect(url_for('Dashboard'))
+
+    if current_user.id == id:
+        return redirect(url_for('Dashboard'))
+
+    user = User.query.filter_by(id=id).first()
+    return render_template('confirm_user_delete.html', user=user)
 
 @app.route('/admin/user/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
