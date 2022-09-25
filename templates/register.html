@@ -11,6 +11,15 @@ Register
         <a class="navbar-brand" href="{{url_for('Home')}}">Inventory manager</a>
     </div>
 </nav>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for msg in messages %}
+        <div>
+            <p>{{ msg }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
 <form method="POST" action="">
     {{ form.hidden_tag() }}
     {{ wtf.quick_form(form) }}

@@ -17,7 +17,7 @@
         <ul class="nav-options">
             <li class="nav-option">
                 <a class="" href="{{ url_for('Dashboard') }}">Dashboard</a>
-            </li>
+            </ li>
             {% if current_user.role == 0 %}
             <li class="nav-option">
                 <a class="" href="{{ url_for('AdminUsers') }}">User management</a>

@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, IntegerField, Selec
 from wtforms.validators import InputRequired, Length, ValidationError, NumberRange
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
+import re
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -131,12 +132,15 @@ def Home():
 def Register():
     form = RegistrationForm()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', form.password.data):
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
+        session.pop('_flashes', None)
         return redirect(url_for('Login'))
+    else:
+        flash('Please enter a valid password.', 'warning')
 
     return render_template('register.html', form=form)
 
@@ -145,13 +149,16 @@ def Register():
 def Login():
     form = LoginForm()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', form.password.data):
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
                 session['was_logged_in'] = True
+                session.pop('_flashes', None)
                 return redirect(url_for('Dashboard'))
+    else:
+        flash('Please enter valid login information')
     return render_template('login.html', form=form)
 
 
@@ -172,6 +179,7 @@ def Dashboard():
     if current_user.company_id:
         company = Company.query.filter_by(id=current_user.company_id).first()
         yards = Yard.query.filter_by(company_id=current_user.company_id).all()
+        session.pop('_flashes', None)
 
     return render_template('dashboard.html', company=company, yards=yards)
 
